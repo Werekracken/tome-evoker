@@ -23,9 +23,11 @@ You can hurt, heal, and have no effect on your demons and shadows differently wi
 
 __NOTE:__ This addon requires that you have the Ashes DLC active.
 
-<https://te4.org/games/addons/tome/evoker>
+[Github](https://github.com/Werekracken/tome-evoker)
 
-<https://forums.te4.org/viewtopic.php?f=50&t=52022>
+[Download](https://te4.org/games/addons/tome/evoker)
+
+[Forum](https://forums.te4.org/viewtopic.php?f=50&t=52022)
 
 ## Generic talents
 

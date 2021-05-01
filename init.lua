@@ -13,6 +13,8 @@ You can hurt, heal, and have no effect on your demons and shadows differently wi
 
 NOTE: This addon requires that you have the Ashes DLC active.
 
+https://github.com/Werekracken/tome-evoker
+
 ---Generic talents
 corruption/black-magic
 corruption/torment
