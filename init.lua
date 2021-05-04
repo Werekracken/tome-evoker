@@ -2,7 +2,7 @@ long_name = "Evoker"
 short_name = "evoker"
 for_module = "tome"
 version = {1,7,2}
-addon_version = {1,2,3}
+addon_version = {1,2,4}
 weight = 2000
 author = {"Werekracken"}
 tags = {"class", "evoker", "cursed", "corrupted", "demon", "summoner"}
@@ -108,6 +108,9 @@ v1.2.3
 Gave Imp and Wretch movement talents.
 Fixed demon equipment so they don't spawn with antimagic items.
 Toned down demon chance to get egos on equipment, made level in Improved Summoning increase the chance.
+
+v1.2.4
+Minor code cleanup.
 ]]
 overload = true
 superload = false

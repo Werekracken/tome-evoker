@@ -120,6 +120,9 @@ As your Improved Summoning talent increases, so do the chances of your demons be
 
 ## Changelog
 
+v1.2.4
+Minor code cleanup.
+
 v1.2.3
 Gave Imp and Wretch movement talents.
 Fixed demon equipment so they don't spawn with antimagic items.
