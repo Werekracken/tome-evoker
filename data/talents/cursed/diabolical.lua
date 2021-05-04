@@ -15,7 +15,7 @@ newTalent{
 	getSpeed = function(self, t) return math.floor(self:combatTalentScale(t, 2, 5)) end,
 	getDaze = function(self, t) return math.floor(self:combatTalentScale(t, 4, 10)) end,
 	getDieAt = function(self, t) return self:combatTalentMindDamage(t, 10, 200) end,
-	action = function(self, t, p)
+	action = function(self, t)
 		local tg = self:getTalentTarget(t)
 		self:projectApply(tg, self.x, self.y, Map.ACTOR, function(target)
 			if self:reactionToward(target) < 0 then
@@ -46,7 +46,7 @@ newTalent{
 	name = "Demon Portal", short_name = "WK_DEMON_PORTAL",
 	type = {"cursed/diabolical", 2},
 	image = "talents/wk_demon_portal.png",
-	points = 5, 
+	points = 5,
 	require = cursed_wil_req2,
 	vim = 15,
 	--hate = 5,
@@ -100,7 +100,7 @@ newTalent{
 	name = "Speed Demon", short_name = "WK_SPEED_DEMON",
 	type = {"cursed/diabolical", 3},
 	image = "talents/wk_speed_demon.png",
-	points = 5, 
+	points = 5,
 	require = cursed_wil_req3,
 	mode = "sustained",
 	sustain_vim = 10,
@@ -116,14 +116,14 @@ newTalent{
 			power = self:addTemporaryValue("combat_mindpower", t.getPower(self, t))
 		}
 	end,
-	deactivate = function(self, t, p)
+	deactivate = function(self, t, p) -- luacheck: ignore 212
 		self.max_life = self.max_life * 1.1 --10% life cost
 		self:removeTemporaryValue("movement_speed", p.speed)
 		self:removeTemporaryValue("combat_mindpower", p.power)
 		return true
 	end,
 	info = function(self, t)
-		return([[You sacrifice 10%% of your max life in return for speed and power. 
+		return([[You sacrifice 10%% of your max life in return for speed and power.
 		While sustained you gain %d%% movement speed and increase your Mindpower by %d.
 		The speed bonus will increase with your Willpower.]]):tformat(t.getSpeed(self, t)*100, t.getPower(self, t)*5)
 	end,
@@ -152,7 +152,7 @@ newTalent{
 		ret.particle = self:addParticles(Particles.new("circle", 1, {oversize=1, a=140, shader=true, base_rot=180, appear=12, speed=0, img="abyssal_shield", radius=0}))
 		return ret
 	end,
-	deactivate = function(self, t, p)
+	deactivate = function(self, t, p) -- luacheck: ignore 212
 		self:removeParticles(p.particle)
 		return true
 	end,

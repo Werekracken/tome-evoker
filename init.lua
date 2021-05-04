@@ -35,7 +35,7 @@ You instantly swap places with your demon. This heals both of you for %d life an
 The amount healed will increase with your Mindpower.
 
 Speed Demon:
-You sacrifice 10%% of your max health in return for speed and power. 
+You sacrifice 10%% of your max health in return for speed and power.
 While sustained you gain %d%% movement speed and increase your Mindpower by %d.
 The speed bonus will increase with your Willpower.
 
@@ -63,7 +63,7 @@ Summoned demons can only be maintained up to a range of %d, and will remateriali
 Only one summoned demon may be active at a time, and the stat bonuses will improve with your Spellpower.
 
 Demon Unity:
-You now gain %d%% spell speed while Summon Demon: Imp is active, %d%% resist all while Summon Demon: Dúathedlen is active, and %d Mindpower while Summon Demon: Wretch is active. 
+You now gain %d%% spell speed while Summon Demon: Imp is active, %d%% resist all while Summon Demon: Dúathedlen is active, and %d Mindpower while Summon Demon: Wretch is active.
 These bonuses scale with your Spellpower.
 
 Flame Fury:
@@ -80,7 +80,7 @@ As your Improved Summoning talent increases, so do the chances of your demons be
 
 ---Changelog
 v1.0.0
-Initial release 
+Initial release
 
 v1.1.0
 Took out Demonic Possession and added Demonic Pulse. Moved Improved Summoning to the 4th talent to be the capstone.

@@ -8,22 +8,20 @@ local function cancelDemonSummons(self, id)
 		-- Put other demon summons on cooldown
 		if id and id ~= t then
 			if self:knowTalent(t) then
-				local t = self:getTalentFromId(t)
 				self:startTalentCooldown(t)
-			end	
+			end
 		end
 	end
 end
 
 -- Set up our act function so we don't run all over the map
 local function setupAct(self)
-	self.on_act = function(self)
+	self.on_act = function(self) -- luacheck: ignore 432
 		local tid = self.summoning_tid
 		if not game.level:hasEntity(self.summoner) or self.summoner.dead or not self.summoner:isTalentActive(tid) then
 			game:onTickEnd(function()self:die(self)end)
 		end
 		if game.level:hasEntity(self.summoner) and core.fov.distance(self.x, self.y, self.summoner.x, self.summoner.y) > 10 then
-			local Map = require "engine.Map"
 			local x, y = util.findFreeGrid(self.summoner.x, self.summoner.y, 5, true, {[engine.Map.ACTOR]=true})
 			if not x then
 				return
@@ -38,9 +36,9 @@ end
 
 -- And our die function to make sure our sustain is disabled properly
 local function setupDie(self)
-	self.on_die = function(self)
+	self.on_die = function(self) -- luacheck: ignore 432
 		local tid = self.summoning_tid
-		game:onTickEnd(function() 
+		game:onTickEnd(function()
 			if self.summoner:isTalentActive(tid) then
 				self.summoner:forceUseTalent(tid, {ignore_energy=true})
 			end
@@ -108,11 +106,11 @@ function setupSummonedDemon(self, m, x, y, t)
 			orders = {target=true, leash=true, anchor=true, talents=true},
 		})
 	end
-	
+
 	-- Build our act and die functions
 	m.summoning_tid = t.id
 	setupAct(m); setupDie(m)
-	
+
 	-- Add the thought-form to the level
 	m:resolve() m:resolve(nil, true)
 	m:forceLevelup(self.level)
@@ -133,7 +131,7 @@ newTalent{
 	short_name = "WK_SUMMON_DEMON_IMP",
 	type = {"corruption/other", 1},
 	image = "talents/wk_imp.png",
-	points = 5, 
+	points = 5,
 	require = corrs_req1,
 	sustain_vim = 40,
 	sustain_hate = 10,
@@ -142,23 +140,20 @@ newTalent{
 	cooldown = 5,
 	range = 10,
 	no_unlearn_last = true,
-	getStatBonus = function(self, t) 
-		local t = self:getTalentFromId(self.T_WK_SUMMON_DEMON)
-		return t.getStatBonus(self, t)
-	end,
+	getStatBonus = function(self) local t = self:getTalentFromId(self.T_WK_SUMMON_DEMON) return t.getStatBonus(self, t) end,
 	activate = function(self, t)
 		cancelDemonSummons(self, t.id)
-		
+
 		-- Find space
 		local x, y = util.findFreeGrid(self.x, self.y, 5, true, {[Map.ACTOR]=true})
 		if not x then
 			game.logPlayer(self, "Not enough space to summon!")
 			return
 		end
-		
-		-- Do our stat bonuses here so we only roll for crit once	
+
+		-- Do our stat bonuses here so we only roll for crit once
 		local stat_bonus = math.floor(self:spellCrit(t.getStatBonus(self, t)))
-	
+
 		local NPC = require "mod.class.NPC"
 		local m = NPC.new{ _no_upvalues_check=true,
 			name = _t"summoned demon imp", summoner = self,
@@ -182,11 +177,11 @@ newTalent{
 			},
 			resists = {[DamageType.FIRE] = 100},
 			summoner_hate_per_kill = self.hate_per_kill/4,
-			resolvers.talents{ 
+			resolvers.talents{
 				--[Talents.T_LIGHT_ARMOUR_TRAINING]= math.ceil(self.level/20),
 				[Talents.T_STAFF_MASTERY]= math.ceil(self.level/10),
 				[Talents.T_WEAPON_COMBAT]= math.ceil(self.level/10), -- Combat Accuracy
-				
+
 				[Talents.T_FLAME]= math.ceil(self.level/10),
 				--[Talents.T_GHOST_WALK]= math.ceil(self.level/10),
 
@@ -212,12 +207,12 @@ newTalent{
 			summon = m
 		}
 		if self:knowTalent(self.T_WK_DEMON_UNITY) then
-			local t = self:getTalentFromId(self.T_WK_DEMON_UNITY)
-			ret.speed = self:addTemporaryValue("combat_spellspeed", t.getSpeedPower(self, t)/100)
+			local tal = self:getTalentFromId(self.T_WK_DEMON_UNITY)
+			ret.speed = self:addTemporaryValue("combat_spellspeed", tal.getSpeedPower(self, t)/100)
 		end
 		return ret
 	end,
-	deactivate = function(self, t, p)
+	deactivate = function(self, t, p) -- luacheck: ignore 212
 		if p.summon and p.summon.summoner == self then
 			p.summon:die(p.summon)
 		end
@@ -225,7 +220,7 @@ newTalent{
 		return true
 	end,
 	info = function(self, t)
-		local stat = t.getStatBonus(self, t)
+		local stat = t.getStatBonus(self)
 		return ([[Summons a fire casting imp by sacrificing 50%% of your current health. The imp knows Flame and Controlled Phase Door, and has +%d Magic, +%d Cunning, and +%d Willpower.
 		Activating this talent will put all other demon summons on cooldown.
 		The stat bonuses will improve with your Spellpower.]]):tformat(stat, stat/2, stat/2)
@@ -237,7 +232,7 @@ newTalent{
 	short_name = "WK_SUMMON_DEMON_DUATHEDLEN",
 	type = {"corruption/other", 1},
 	image = "talents/wk_duathedlen.png",
-	points = 5, 
+	points = 5,
 	require = corrs_req1,
 	sustain_vim = 40,
 	sustain_hate = 10,
@@ -246,36 +241,33 @@ newTalent{
 	cooldown = 5,
 	range = 10,
 	no_unlearn_last = true,
-	getStatBonus = function(self, t) 
-		local t = self:getTalentFromId(self.T_WK_SUMMON_DEMON)
-		return t.getStatBonus(self, t)
-	end,
+	getStatBonus = function(self) local t = self:getTalentFromId(self.T_WK_SUMMON_DEMON) return t.getStatBonus(self, t) end,
 	activate = function(self, t)
 		cancelDemonSummons(self, t.id)
-		
+
 		-- Find space
 		local x, y = util.findFreeGrid(self.x, self.y, 5, true, {[Map.ACTOR]=true})
 		if not x then
 			game.logPlayer(self, "Not enough space to summon!")
 			return
 		end
-		
-		-- Do our stat bonuses here so we only roll for crit once	
+
+		-- Do our stat bonuses here so we only roll for crit once
 		local stat_bonus = math.floor(self:spellCrit(t.getStatBonus(self, t)))
-	
+
 		local NPC = require "mod.class.NPC"
 		local m = NPC.new{ _no_upvalues_check=true,
 			name = _t"summoned demon dúathedlen", summoner = self,
 			color=colors.CRIMSON, image = "npc/wk_demon_duathedlen.png",
-			shader = "shadow_simulacrum", 
+			shader = "shadow_simulacrum",
 			shader_args = { color = {0.1, 0.1, 0.1}, base = 0.9, time_factor = 10000 },
 			desc = _t[[A summoned demon dúathedlen shrouded in smoke. It wields daggers and appears ready for battle.]],
 			body = { INVEN = 10, MAINHAND = 1, OFFHAND = 1, BODY = 1},
-			
+
 			ai = "summoned", ai_real = "tactical",
 			ai_state = { ai_move="move_complex", talent_in=3, ally_compassion=10 },
 			ai_tactic = resolvers.tactic("melee"),
-			
+
 			max_life = resolvers.rngavg(100,110),
 			life_rating = 13,
 			combat_armor = 0, combat_def = 0,
@@ -284,15 +276,15 @@ newTalent{
 				cun = stat_bonus / 2,
 				dex = stat_bonus,
 			},
-			
+
 			resists = {[DamageType.DARKNESS] = 100},
 			summoner_hate_per_kill = self.hate_per_kill/4,
 
-			resolvers.talents{ 
+			resolvers.talents{
 				[Talents.T_LIGHT_ARMOUR_TRAINING]= math.ceil(self.level/20),
 				[Talents.T_WEAPON_COMBAT]= math.ceil(self.level/10), -- Combat Accuracy
 				[Talents.T_KNIFE_MASTERY] = math.ceil(self.level/10),
-				
+
 				[Talents.T_SHADOWSTEP]= math.ceil(self.level/10),
 				[Talents.T_DIRTY_FIGHTING]= math.ceil(self.level/10),
 
@@ -317,12 +309,12 @@ newTalent{
 			summon = m
 		}
 		if self:knowTalent(self.T_WK_DEMON_UNITY) then
-			local t = self:getTalentFromId(self.T_WK_DEMON_UNITY)
-			ret.resist = self:addTemporaryValue("resists", {all= t.getDefensePower(self, t)})
+			local tal = self:getTalentFromId(self.T_WK_DEMON_UNITY)
+			ret.resist = self:addTemporaryValue("resists", {all= tal.getDefensePower(self, t)})
 		end
 		return ret
 	end,
-	deactivate = function(self, t, p)
+	deactivate = function(self, t, p) -- luacheck: ignore 212
 		if p.summon and p.summon.summoner == self then
 			p.summon:die(p.summon)
 		end
@@ -330,7 +322,7 @@ newTalent{
 		return true
 	end,
 	info = function(self, t)
-		local stat = t.getStatBonus(self, t)
+		local stat = t.getStatBonus(self)
 		return ([[Summons a dark melee dúathedlen by sacrificing 50%% of your current health. The dúathedlen knows Shadowstep and Dirty Fighting, and has +%d Dexterity, +%d Cunning, and +%d Magic.
 		Activating this talent will put all other demon summons on cooldown.
 		The stat bonuses will improve with your Spellpower.]]):tformat(stat, stat/2, stat/2)
@@ -342,7 +334,7 @@ newTalent{
 	short_name = "WK_SUMMON_DEMON_WRETCH",
 	type = {"corruption/other", 1},
 	image = "talents/wk_wretch.png",
-	points = 5, 
+	points = 5,
 	require = corrs_req1,
 	sustain_vim = 40,
 	sustain_hate = 10,
@@ -351,36 +343,33 @@ newTalent{
 	cooldown = 5,
 	range = 10,
 	no_unlearn_last = true,
-	getStatBonus = function(self, t) 
-		local t = self:getTalentFromId(self.T_WK_SUMMON_DEMON)
-		return t.getStatBonus(self, t)
-	end,
+	getStatBonus = function(self) local t = self:getTalentFromId(self.T_WK_SUMMON_DEMON) return t.getStatBonus(self, t) end,
 	activate = function(self, t)
 		cancelDemonSummons(self, t.id)
-		
+
 		-- Find space
 		local x, y = util.findFreeGrid(self.x, self.y, 5, true, {[Map.ACTOR]=true})
 		if not x then
 			game.logPlayer(self, "Not enough space to summon!")
 			return
 		end
-		
-		-- Do our stat bonuses here so we only roll for crit once		
+
+		-- Do our stat bonuses here so we only roll for crit once
 		local stat_bonus = math.floor(self:spellCrit(t.getStatBonus(self, t)))
-	
+
 		local NPC = require "mod.class.NPC"
 		local m = NPC.new{ _no_upvalues_check=true,
-			name = _t"summoned demon wretch", summoner = self, 
+			name = _t"summoned demon wretch", summoner = self,
 			color=colors.DARK_GREEN, image = "npc/horror_eldritch_worm_that_walks.png",
 			shader = "shadow_simulacrum",
 			shader_args = { color = {0.3, 0.3, 0.0}, base = 0.3, time_factor = 10000 },
 			desc = _t[[A summoned demon wretch wielding rusty axes in both hands and clad in soiled heavy armor. It appears ready for battle.]],
 			body = { INVEN = 10, MAINHAND = 1, OFFHAND = 1, BODY = 1},
-		
+
 			ai = "summoned", ai_real = "tactical",
 			ai_state = { ai_move="move_complex", talent_in=3, ally_compassion=10 },
 			ai_tactic = resolvers.tactic("melee"),
-			
+
 			max_life = resolvers.rngavg(100,110),
 			life_rating = 13,
 			combat_armor = 0, combat_def = 0,
@@ -393,11 +382,11 @@ newTalent{
 			resists = {[DamageType.BLIGHT] = 100},
 			summoner_hate_per_kill = self.hate_per_kill/4,
 
-			resolvers.talents{ 
+			resolvers.talents{
 				[Talents.T_ARMOUR_TRAINING]= 1 + math.ceil(self.level/20),
 				[Talents.T_WEAPON_COMBAT]= math.ceil(self.level/10), -- Combat Accuracy
 				[Talents.T_WEAPONS_MASTERY]= math.ceil(self.level/10),
-				
+
 				[Talents.T_BLINDSIDE]= math.ceil(self.level/10),
 				[Talents.T_CORRUPTED_STRENGTH]= math.ceil(self.level/10),
 
@@ -415,19 +404,19 @@ newTalent{
 
 		setupSummonedDemon(self, m, x, y, t)
 		game:playSoundNear(self, "talents/spell_generic")
-		
+
 		self.life = self.life * 0.5 --50% life cost
 
 		local ret = {
 			summon = m
 		}
 		if self:knowTalent(self.T_WK_DEMON_UNITY) then
-			local t = self:getTalentFromId(self.T_WK_DEMON_UNITY)
-			ret.power = self:addTemporaryValue("combat_mindpower", t.getOffensePower(self, t))
+			local tal = self:getTalentFromId(self.T_WK_DEMON_UNITY)
+			ret.power = self:addTemporaryValue("combat_mindpower", tal.getOffensePower(self, t))
 		end
 		return ret
 	end,
-	deactivate = function(self, t, p)
+	deactivate = function(self, t, p) -- luacheck: ignore 212
 		if p.summon and p.summon.summoner == self then
 			p.summon:die(p.summon)
 		end
@@ -435,7 +424,7 @@ newTalent{
 		return true
 	end,
 	info = function(self, t)
-		local stat = t.getStatBonus(self, t)
+		local stat = t.getStatBonus(self)
 		return ([[Summons a blighted melee wretch by sacrificing 50%% of your current health. The wretch knows Blindside and Corrupted Strength, and has +%d Strength, +%d Dexterity, and +%d Constitution.
 		Activating this talent will put all other demon summons on cooldown.
 		The stat bonuses will improve with your Spellpower.]]):tformat(stat, stat/2, stat/2)
@@ -447,7 +436,7 @@ newTalent{
 	short_name = "WK_SUMMON_DEMON",
 	type = {"corruption/demon-summons", 1},
 	image = "talents/wk_summon_demon.png",
-	points = 5, 
+	points = 5,
 	require = corrs_req1,
 	mode = "passive",
 	range = 10,
@@ -463,7 +452,7 @@ newTalent{
 		if self:getTalentLevel(t) >= 6 and not self:knowTalent(self.T_WK_SUMMON_DEMON_WRETCH) then
 			self:learnTalent(self.T_WK_SUMMON_DEMON_WRETCH, true)
 		end
-	end,	
+	end,
 	on_unlearn = function(self, t)
 		if self:getTalentLevel(t) < 1 and self:knowTalent(self.T_WK_SUMMON_DEMON_IMP) then
 			self:unlearnTalent(self.T_WK_SUMMON_DEMON_IMP)
@@ -489,7 +478,7 @@ newTalent{
 	name = "Demon Unity", short_name = "WK_DEMON_UNITY",
 	type = {"corruption/demon-summons", 2},
 	image = "talents/wk_unity.png",
-	points = 5, 
+	points = 5,
 	require = corrs_req2,
 	mode = "passive",
 	getSpeedPower = function(self, t) return self:combatTalentSpellDamage(t, 5, 15) end,
@@ -499,7 +488,7 @@ newTalent{
 		local offense = t.getOffensePower(self, t)
 		local defense = t.getDefensePower(self, t)
 		local speed = t.getSpeedPower(self, t)
-		return([[You now gain %d%% spell speed while Summoned Demon: Imp is active, %d%% resist all while Summoned Demon: Dúathedlen is active, and %d Mindpower while Summoned Demon: Wretch is active. 
+		return([[You now gain %d%% spell speed while Summoned Demon: Imp is active, %d%% resist all while Summoned Demon: Dúathedlen is active, and %d Mindpower while Summoned Demon: Wretch is active.
 		These bonuses scale with your Spellpower.]]):tformat(speed, defense, offense)
 	end,
 }
@@ -524,7 +513,7 @@ newTalent{
 	getDamage = function(self, t) return self:combatTalentSpellDamage(t, 28, 180) end,
 	action = function(self, t)
 		local tg = self:getTalentTarget(t)
-		local grids = self:project(tg, self.x, self.y, DamageType.FIREKNOCKBACK_MIND, {dist=3, dam=self:spellCrit(t.getDamage(self, t))})
+		self:project(tg, self.x, self.y, DamageType.FIREKNOCKBACK_MIND, {dist=3, dam=self:spellCrit(t.getDamage(self, t))})
 		game.level.map:particleEmitter(self.x, self.y, tg.radius, "ball_fire", {radius=tg.radius})
 		game:playSoundNear(self, "talents/fire")
 
@@ -544,7 +533,7 @@ newTalent{
 	short_name = "WK_IMPROVED_SUMMONING",
 	type = {"corruption/demon-summons", 4},
 	image = "talents/wk_major_summoning.png",
-	points = 5, 
+	points = 5,
 	require = corrs_req4,
 	mode = "passive",
 	info = function(self, t)
