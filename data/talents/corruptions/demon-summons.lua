@@ -120,9 +120,11 @@ function setupSummonedDemon(self, m, x, y, t)
 	-- Summons never flee
 	m.ai_tactic = m.ai_tactic or {}
 	m.ai_tactic.escape = 0
-	if self.name == "summoned demon imp" then
+	if m.name == "summoned demon imp" then
 		m.ai_tactic.safe_range = 2
 	end
+
+	self:attr("summoned_times", 99)
 end
 
 -- demon-summons
@@ -165,7 +167,6 @@ newTalent{
 
 			ai = "summoned", ai_real = "tactical",
 			ai_state = { ai_move="move_complex", talent_in=1, ally_compassion=10 },
-			--ai_tactic = resolvers.tactic("ranged"),
 			ai_tactic = resolvers.tactic("melee"),
 			max_life = resolvers.rngavg(100,110),
 			life_rating = 9,
@@ -178,12 +179,11 @@ newTalent{
 			resists = {[DamageType.FIRE] = 100},
 			summoner_hate_per_kill = self.hate_per_kill/4,
 			resolvers.talents{
-				--[Talents.T_LIGHT_ARMOUR_TRAINING]= math.ceil(self.level/20),
+				[Talents.T_LIGHT_ARMOUR_TRAINING]= math.ceil(self.level/20),
 				[Talents.T_STAFF_MASTERY]= math.ceil(self.level/10),
 				[Talents.T_WEAPON_COMBAT]= math.ceil(self.level/10), -- Combat Accuracy
 
 				[Talents.T_FLAME]= math.ceil(self.level/10),
-				--[Talents.T_GHOST_WALK]= math.ceil(self.level/10),
 
 				[Talents.T_BODY_OF_FIRE]= math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)),
 				[Talents.T_BURNING_HEX]= math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)),
@@ -286,7 +286,7 @@ newTalent{
 				[Talents.T_KNIFE_MASTERY] = math.ceil(self.level/10),
 
 				[Talents.T_SHADOWSTEP]= math.ceil(self.level/10),
-				[Talents.T_DIRTY_FIGHTING]= math.ceil(self.level/10),
+				[Talents.T_REGENERATION]= math.ceil(self.level/10),
 
 				[Talents.T_SHADOW_COMBAT]= math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)),
 				[Talents.T_SHADOW_GRASP]= math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)),
@@ -323,7 +323,7 @@ newTalent{
 	end,
 	info = function(self, t)
 		local stat = t.getStatBonus(self)
-		return ([[Summons a dark melee dúathedlen by sacrificing 50%% of your current health. The dúathedlen knows Shadowstep and Dirty Fighting, and has +%d Dexterity, +%d Cunning, and +%d Magic.
+		return ([[Summons a dark melee dúathedlen by sacrificing 50%% of your current health. The dúathedlen knows Shadowstep and Regeneration, and has +%d Dexterity, +%d Cunning, and +%d Magic.
 		Activating this talent will put all other demon summons on cooldown.
 		The stat bonuses will improve with your Spellpower.]]):tformat(stat, stat/2, stat/2)
 	end,
