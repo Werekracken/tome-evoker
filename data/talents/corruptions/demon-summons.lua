@@ -159,6 +159,7 @@ newTalent{
 		local NPC = require "mod.class.NPC"
 		local m = NPC.new{ _no_upvalues_check=true,
 			name = _t"summoned demon imp", summoner = self,
+			power_source = {arcane=true},
 			color=colors.DARK_RED, image = "npc/demon_minor_fire_imp.png",
 			shader = "shadow_simulacrum",
 			shader_args = { color = {0.4, 0.0, 0.0}, base = 0.7, time_factor = 10000 },
@@ -191,9 +192,9 @@ newTalent{
 			},
 			resolvers.inscription("RUNE:_CONTROLLED_PHASE_DOOR", {cooldown=7, range=10, dur=5, power=15}),
 			resolvers.equip{
-				{type="weapon", subtype="staff", autoreq=true, ego_chance = math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)), forbid_power_source={antimagic=true}, not_properties = {"unique"} },
-				{type="armor", subtype="cloth", autoreq=true, ego_chance = math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)), forbid_power_source={antimagic=true}, not_properties = {"unique"} },
-				{type="armor", subtype="hands", autoreq=true, ego_chance = math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)), forbid_power_source={antimagic=true}, not_properties = {"unique"} },
+				{type="weapon", subtype="staff", autoreq=true, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
+				{type="armor", subtype="cloth", autoreq=true, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
+				{type="armor", subtype="hands", autoreq=true, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"}, not_properties = {"metallic"}, },
 			},
 			resolvers.sustains_at_birth(),
 		}
@@ -258,6 +259,7 @@ newTalent{
 		local NPC = require "mod.class.NPC"
 		local m = NPC.new{ _no_upvalues_check=true,
 			name = _t"summoned demon dúathedlen", summoner = self,
+			power_source = {arcane=true},
 			color=colors.CRIMSON, image = "npc/wk_demon_duathedlen.png",
 			shader = "shadow_simulacrum",
 			shader_args = { color = {0.1, 0.1, 0.1}, base = 0.9, time_factor = 10000 },
@@ -293,9 +295,9 @@ newTalent{
 				[Talents.T_SHADOW_VEIL]= math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)),
 			},
 			resolvers.equip{
-				{type="weapon", subtype="dagger", autoreq=true, ego_chance = math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)), forbid_power_source={antimagic=true}, not_properties = {"unique"} },
-				{type="weapon", subtype="dagger", autoreq=true, ego_chance = math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)), forbid_power_source={antimagic=true}, not_properties = {"unique"} },
-				{type="armor", subtype="light", autoreq=true, ego_chance = math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)), forbid_power_source={antimagic=true}, not_properties = {"unique"} },
+				{type="weapon", subtype="dagger", autoreq=true, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
+				{type="weapon", subtype="dagger", autoreq=true, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
+				{type="armor", subtype="light", autoreq=true, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
 			},
 			resolvers.sustains_at_birth(),
 		}
@@ -360,6 +362,7 @@ newTalent{
 		local NPC = require "mod.class.NPC"
 		local m = NPC.new{ _no_upvalues_check=true,
 			name = _t"summoned demon wretch", summoner = self,
+			power_source = {arcane=true},
 			color=colors.DARK_GREEN, image = "npc/horror_eldritch_worm_that_walks.png",
 			shader = "shadow_simulacrum",
 			shader_args = { color = {0.3, 0.3, 0.0}, base = 0.3, time_factor = 10000 },
@@ -395,9 +398,9 @@ newTalent{
 				[Talents.T_BLOOD_SPLASH]= math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)),
 			},
 			resolvers.equip{
-				{type="weapon", subtype="waraxe", autoreq=true, ego_chance = math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)), forbid_power_source={antimagic=true}, not_properties = {"unique"} },
-				{type="weapon", subtype="waraxe", autoreq=true, ego_chance = math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)), forbid_power_source={antimagic=true}, not_properties = {"unique"} },
-				{type="armor", subtype="heavy", autoreq=true, ego_chance = math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)), forbid_power_source={antimagic=true}, not_properties = {"unique"} },
+				{type="weapon", subtype="waraxe", autoreq=true, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
+				{type="weapon", subtype="waraxe", autoreq=true, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
+				{type="armor", subtype="heavy", autoreq=true, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
 			},
 			resolvers.sustains_at_birth(),
 		}
