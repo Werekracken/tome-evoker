@@ -83,34 +83,22 @@ v1.0.0
 Initial release
 
 v1.1.0
-Took out Demonic Possession and added Demonic Pulse. Moved Improved Summoning to the 4th talent to be the capstone.
-Cut total hate pool down to 25. Added a hate cost to Demonic Pulse and to the Summon Demon sustains.
-Reduced max_life from 110 to 90.
-Improved class description.
+Took out Demonic Possession and added Demonic Pulse. Moved Improved Summoning to the 4th talent to be the capstone. Cut total hate pool down to 25. Added a hate cost to Demonic Pulse and to the Summon Demon sustains. Reduced max_life from 110 to 90. Improved class description.
 
 v1.2.0
-New cursed/diabolical generic tree that replaces cursed/dark-sustenance.
-Moved Demonic Pulse to Diabolical tree and replaced it with Flame Fury.
-Made demon kills grant the player 1/4 of the hate for the kill.
-Changed Duathedlen skills to take out stealth.
-Added more sacrifice health costs to skills.
+New cursed/diabolical generic tree that replaces cursed/dark-sustenance. Moved Demonic Pulse to Diabolical tree and replaced it with Flame Fury. Made demon kills grant the player 1/4 of the hate for the kill. Changed Duathedlen skills to take out stealth. Added more sacrifice health costs to skills.
 
 v1.2.1
-Fixed typos.
-Reduced sustain hate cost on demons and added a hate gain to Demon Portal to address resource starvation on tough single target fights.
-Changed the range on Demon Portal to scale with talent points.
-Tweaked the talent icon for Speed Demon.
+Fixed typos. Reduced sustain hate cost on demons and added a hate gain to Demon Portal to address resource starvation on tough single target fights. Changed the range on Demon Portal to scale with talent points. Tweaked the talent icon for Speed Demon.
 
 v1.2.2
 Fixed some talent descriptions.
 
 v1.2.3
-Gave Imp and Wretch movement talents.
-Fixed demon equipment so they don't spawn with antimagic items.
-Toned down demon chance to get egos on equipment, made level in Improved Summoning increase the chance.
+Gave Imp and Wretch movement talents. Fixed demon equipment so they don't spawn with antimagic items. Toned down demon chance to get egos on equipment, made level in Improved Summoning increase the chance.
 
 v1.2.4
-Minor code cleanup.
+Reduced pre-req for Blighted Summoning to apply to demons. Fixed imp sometimes missing equipment. Fixed ego chances for demon equipment. Increased imp defense. Gave dúathedlen a regen talent. Added out-of-phase to Demon Portal. Set demon speed equal to yours. Took out some preset talent points to let you spend them as you want. Made Evoker life rating equal to the highest mage (alchemist). Balanced imp phase door. Some hate balancing.
 ]]
 overload = true
 superload = false

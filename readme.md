@@ -121,7 +121,7 @@ As your Improved Summoning talent increases, so do the chances of your demons be
 ## Changelog
 
 v1.2.4
-Minor code cleanup.
+Reduced pre-req for Blighted Summoning to apply to demons. Fixed imp sometimes missing equipment. Fixed ego chances for demon equipment. Increased imp defense. Gave dúathedlen a regen talent. Added out-of-phase to Demon Portal. Set demon speed equal to yours. Took out some preset talent points to let you spend them as you want. Made Evoker life rating equal to the highest mage (alchemist). Balanced imp phase door. Some hate balancing.
 
 v1.2.3
 Gave Imp and Wretch movement talents.
