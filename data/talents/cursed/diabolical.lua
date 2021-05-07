@@ -5,7 +5,7 @@ newTalent{
 	points = 5,
 	require = cursed_wil_req1,
 	vim = 10,
-	hate = 5,
+	hate = 7,
 	cooldown = 18,
 	tactical = { BUFF=2, DISABLE = {daze=2} },
 	range = 0,
@@ -56,6 +56,7 @@ newTalent{
 	target = function(self, t) return {type="hit", range=self:getTalentRange(t), nowarning=true, can_autoaccept=true } end,
 	getHeal = function(self, t) return self:combatTalentMindDamage(t, 40, 200) end,
 	is_heal = true,
+	getPhase = function(self, t) return self:combatTalentMindDamage(t, 5, 20) end,
 	action = function(self, t)
 		-- Find our demon
 		local demon = game.party:findMember{type="demon"}
@@ -79,20 +80,39 @@ newTalent{
 		self:attr("allow_on_heal", 1)
 		self:heal(self:spellCrit(t.getHeal(self, t)), self)
 		self:attr("allow_on_heal", -1)
+
 		-- Heal demon
 		demon:attr("allow_on_heal", 1)
 		demon:heal(self:spellCrit(t.getHeal(self, t)), self)
 		demon:attr("allow_on_heal", -1)
+
+		-- Self out of phase
+		self:setEffect(self.EFF_OUT_OF_PHASE, 5, {
+			defense=t.getPhase(self, t),
+			resists=t.getPhase(self, t),
+			effect_reduction=t.getPhase(self, t),
+		})
+
+		-- Demon out of phase
+		demon:setEffect(demon.EFF_OUT_OF_PHASE, 5, {
+			defense=t.getPhase(self, t),
+			resists=t.getPhase(self, t),
+			effect_reduction=t.getPhase(self, t),
+		})
+
 		-- Gain hate
 		self.hate = self.hate + 5
+
 
 		game:playSoundNear(self, "talents/teleport")
 		return true
 	end,
 	info = function(self, t)
 		local heal = t.getHeal(self, t)
+		local phase = t.getPhase(self,t)
 		return([[You instantly swap places with your demon. This heals both of you for %d life and you gain 5 hate.
-		The amount healed will increase with your Mindpower.]]):tformat(heal)
+		Afterwards, your demon and yourself will be out of phase for 3 turns. In this state all new negative status effects duration is reduced by %d%%, your defense is increased by %d and all your resistances by %d%%.
+		The amount healed and out of phase bonuses will increase with your Mindpower.]]):tformat(heal, phase, phase, phase)
 	end,
 }
 

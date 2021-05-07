@@ -165,7 +165,8 @@ newTalent{
 			shader_args = { color = {0.4, 0.0, 0.0}, base = 0.7, time_factor = 10000 },
 			desc = _t[[A summoned demon imp. It appears ready for battle.]],
 			body = { INVEN = 10, MAINHAND = 1, BODY = 1, HANDS = 1},
-
+			movement_speed = self.movement_speed,
+			global_speed_base = self.global_speed,
 			ai = "summoned", ai_real = "tactical",
 			ai_state = { ai_move="move_complex", talent_in=1, ally_compassion=10 },
 			ai_tactic = resolvers.tactic("melee"),
@@ -178,7 +179,7 @@ newTalent{
 				wil = stat_bonus / 2,
 			},
 			resists = {[DamageType.FIRE] = 100},
-			summoner_hate_per_kill = self.hate_per_kill/4,
+			summoner_hate_per_kill = self.hate_per_kill/2,
 			resolvers.talents{
 				[Talents.T_LIGHT_ARMOUR_TRAINING]= math.ceil(self.level/20),
 				[Talents.T_STAFF_MASTERY]= math.ceil(self.level/10),
@@ -190,11 +191,11 @@ newTalent{
 				[Talents.T_BURNING_HEX]= math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)),
 				[Talents.T_SMOKE_BOMB]= math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)),
 			},
-			resolvers.inscription("RUNE:_CONTROLLED_PHASE_DOOR", {cooldown=7, range=10, dur=5, power=15}),
+			resolvers.inscription("RUNE:_CONTROLLED_PHASE_DOOR", {cooldown=10, range=5, dur=5, power=15}),
 			resolvers.equip{
 				{type="weapon", subtype="staff", autoreq=true, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
 				{type="armor", subtype="cloth", autoreq=true, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
-				{type="armor", subtype="hands", autoreq=true, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"}, not_properties = {"metallic"}, },
+				{type="armor", subtype="hands", autoreq=true, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique", "metallic"}, },
 			},
 			resolvers.sustains_at_birth(),
 		}
@@ -265,7 +266,8 @@ newTalent{
 			shader_args = { color = {0.1, 0.1, 0.1}, base = 0.9, time_factor = 10000 },
 			desc = _t[[A summoned demon dúathedlen shrouded in smoke. It wields daggers and appears ready for battle.]],
 			body = { INVEN = 10, MAINHAND = 1, OFFHAND = 1, BODY = 1},
-
+			movement_speed = self.movement_speed,
+			global_speed_base = self.global_speed,
 			ai = "summoned", ai_real = "tactical",
 			ai_state = { ai_move="move_complex", talent_in=3, ally_compassion=10 },
 			ai_tactic = resolvers.tactic("melee"),
@@ -280,7 +282,7 @@ newTalent{
 			},
 
 			resists = {[DamageType.DARKNESS] = 100},
-			summoner_hate_per_kill = self.hate_per_kill/4,
+			summoner_hate_per_kill = self.hate_per_kill/2,
 
 			resolvers.talents{
 				[Talents.T_LIGHT_ARMOUR_TRAINING]= math.ceil(self.level/20),
@@ -368,7 +370,8 @@ newTalent{
 			shader_args = { color = {0.3, 0.3, 0.0}, base = 0.3, time_factor = 10000 },
 			desc = _t[[A summoned demon wretch wielding rusty axes in both hands and clad in soiled heavy armor. It appears ready for battle.]],
 			body = { INVEN = 10, MAINHAND = 1, OFFHAND = 1, BODY = 1},
-
+			movement_speed = self.movement_speed,
+			global_speed_base = self.global_speed,
 			ai = "summoned", ai_real = "tactical",
 			ai_state = { ai_move="move_complex", talent_in=3, ally_compassion=10 },
 			ai_tactic = resolvers.tactic("melee"),
@@ -383,7 +386,7 @@ newTalent{
 			},
 
 			resists = {[DamageType.BLIGHT] = 100},
-			summoner_hate_per_kill = self.hate_per_kill/4,
+			summoner_hate_per_kill = self.hate_per_kill/2,
 
 			resolvers.talents{
 				[Talents.T_ARMOUR_TRAINING]= 1 + math.ceil(self.level/20),

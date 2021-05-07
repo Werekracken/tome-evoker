@@ -13,36 +13,33 @@ newBirthDescriptor{
 	power_source = {arcane=true},
 	stats = { mag=3, wil=3, cun=3 },
 	talents_types = {
-      --generic
+		--generic
 		["corruption/black-magic"]={true, 0.3},
 		["corruption/torment"]={true, 0.3},
 		--["cursed/dark-sustenance"]={true, 0.3},
-      ["cursed/diabolical"]={true, 0.3},
+		["cursed/diabolical"]={true, 0.3},
 		["cursed/cursed-form"]={true, 0.3},
 		["cunning/survival"]={false, 0},
-      --class
+		--class
 		["corruption/shadowflame"]={true, 0.3},
 		["corruption/blood"]={true, 0.3},
-      ["corruption/sanguisuge"]={true, 0.3},
+		["corruption/sanguisuge"]={true, 0.3},
 		["cursed/shadows"]={true, 0.3},
 		["cursed/fears"]={true, 0.3},
-      ["corruption/fearfire"]={false, 0.3},
+		["corruption/fearfire"]={false, 0.3},
 		["cursed/one-with-shadows"]={false, 0.3},
-      --new tree for summoning demons
-      ["corruption/demon-summons"]={true, 0.3},
+		--new tree for summoning demons
+		["corruption/demon-summons"]={true, 0.3},
 	},
 	talents = {
-		[ActorTalents.T_BLEAK_OUTCOME] = 1,
-      [ActorTalents.T_UNNATURAL_BODY] = 1,
+		[ActorTalents.T_UNNATURAL_BODY] = 1,
 		[ActorTalents.T_WK_DEMONIC_PULSE] = 1,
 		[ActorTalents.T_WK_SUMMON_DEMON] = 1,
-      [ActorTalents.T_INSTILL_FEAR] = 1,
-      [ActorTalents.T_CALL_SHADOWS] = 1,
 	},
 	copy = {
 		class_start_check = start_zone,
 		max_life = 90,
-      max_hate = 25,
+		max_hate = 25,
 		resolvers.auto_equip_filters{
 			MAINHAND = {type="weapon", subtype="staff"},
 			OFFHAND = {special=function(e, filter) -- only allow if there is a 1H weapon in MAINHAND
@@ -55,13 +52,15 @@ newBirthDescriptor{
 			end}
 		},
 		resolvers.equipbirth{ id=true,
-         {type="weapon", subtype="staff", name="elm staff", autoreq=true, ego_chance=-1000},
-         {type="armor", subtype="cloth", name="linen robe", autoreq=true, ego_chance=-1000},
+		 {type="weapon", subtype="staff", name="elm staff", autoreq=true, ego_chance=-1000},
+		 {type="armor", subtype="cloth", name="linen robe", autoreq=true, ego_chance=-1000},
 		},
-      chooseCursedAuraTree = true,
+		chooseCursedAuraTree = true,
 	},
 	copy_add = {
-		life_rating = 2,
+		life_rating = -1,
+		unused_talents = 2,
+		unused_generics = 1,
 	},
 }
 
