@@ -3,33 +3,32 @@ newBirthDescriptor{
 	name = "Evoker",
 	desc = {
 		_t"Evokers are both corrupted and cursed.",
-		_t"They are a magic class that does blight and fire damage and evokes both shadows and a demon to serve you.",
-		_t"You can hurt, heal, and have no effect on your demons and shadows differently with different spells. Learning how to work with and around your minions will be key.",
+		_t"They are a magic class that does blight and darkness damage and evokes a demon minion.",
+		_t"Their most important stats are Magic and Willpower.",
+		_t"It is possible for you and your demons to help or hurt each other with some spells and skills. Learning how to work with and around your minions will be key.",
 		_t"#GOLD#Stat modifiers:",
-		_t"#LIGHT_BLUE# * +0 Strength, +0 Dexterity, +0 Constitution",
-		_t"#LIGHT_BLUE# * +3 Magic, +3 Willpower, +3 Cunning",
+		_t"#LIGHT_BLUE# * +0 Strength, +0 Dexterity, +3 Constitution",
+		_t"#LIGHT_BLUE# * +3 Magic, +3 Willpower, +0 Cunning",
 		_t"#GOLD#Life per level:#LIGHT_BLUE# +2",
 	},
 	power_source = {arcane=true},
-	stats = { mag=3, wil=3, cun=3 },
+	stats = { mag=3, wil=3, con=3 },
 	talents_types = {
 		--generic
-		["corruption/black-magic"]={true, 0.3},
-		["corruption/torment"]={true, 0.3},
-		--["cursed/dark-sustenance"]={true, 0.3},
-		["cursed/diabolical"]={true, 0.3},
 		["cursed/cursed-form"]={true, 0.3},
+		["cursed/diabolical"]={true, 0.3},
 		["cunning/survival"]={false, 0},
+
 		--class
-		["corruption/shadowflame"]={true, 0.3},
-		["corruption/blood"]={true, 0.3},
-		["corruption/sanguisuge"]={true, 0.3},
-		["cursed/shadows"]={true, 0.3},
-		["cursed/fears"]={true, 0.3},
-		["corruption/fearfire"]={false, 0.3},
-		["cursed/one-with-shadows"]={false, 0.3},
-		--new tree for summoning demons
 		["corruption/demon-summons"]={true, 0.3},
+		["corruption/sanguisuge"]={true, 0.3},
+		["corruption/shadowflame"]={true, 0.3},
+		["corruption/vim"]={true, 0.3},
+		["cursed/darkness"]={true, 0.3},
+		["cursed/fears"]={true, 0.3},
+		["corruption/blood"]={false, 0.3},
+		["corruption/doom-covenant"]={false, 0.3},
+		["corruption/fearfire"]={false, 0.3},
 	},
 	talents = {
 		[ActorTalents.T_UNNATURAL_BODY] = 1,
@@ -39,7 +38,7 @@ newBirthDescriptor{
 	copy = {
 		class_start_check = start_zone,
 		max_life = 90,
-		max_hate = 25,
+		max_hate = 30,
 		resolvers.auto_equip_filters{
 			MAINHAND = {type="weapon", subtype="staff"},
 			OFFHAND = {special=function(e, filter) -- only allow if there is a 1H weapon in MAINHAND

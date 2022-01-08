@@ -1,6 +1,6 @@
 -- Cancel Demon Summons
 local function cancelDemonSummons(self, id)
-	local forms = {self.T_WK_SUMMON_DEMON_IMP, self.T_WK_SUMMON_DEMON_WRETCH, self.T_WK_SUMMON_DEMON_DUATHEDLEN}
+	local forms = {self.T_WK_SUMMON_DEMON_IMP, self.T_WK_SUMMON_DEMON_DUATHEDLEN, self.T_WK_SUMMON_DEMON_URUIVELLAS}
 	for i, t in ipairs(forms) do
 		if self:isTalentActive(t) then
 			self:forceUseTalent(t, {ignore_energy=true})
@@ -69,11 +69,11 @@ function setupSummonedDemon(self, m, x, y, t)
 	m.faction = self.faction
 	m.no_inventory_access = true
 	m.rank = 2
-	m.size_category = 3
 	m.infravision = 10
 	m.lite = 1
 	m.no_breath = 1
 	m.move_others = true
+	m.fear_immune = 1
 
 	-- Less tedium
 	m.life_regen = 1
@@ -134,7 +134,7 @@ newTalent{
 	type = {"corruption/other", 1},
 	image = "talents/wk_imp.png",
 	points = 5,
-	require = corrs_req1,
+	require = demons_req1,
 	sustain_vim = 40,
 	sustain_hate = 10,
 	mode = "sustained",
@@ -164,15 +164,16 @@ newTalent{
 			shader = "shadow_simulacrum",
 			shader_args = { color = {0.4, 0.0, 0.0}, base = 0.7, time_factor = 10000 },
 			desc = _t[[A summoned demon imp. It appears ready for battle.]],
-			body = { INVEN = 10, MAINHAND = 1, BODY = 1, HANDS = 1},
+			body = { INVEN = 10, MAINHAND = 1, BODY = 1, FINGER = 2},
 			movement_speed = self.movement_speed,
 			global_speed_base = self.global_speed,
 			ai = "summoned", ai_real = "tactical",
 			ai_state = { ai_move="move_complex", talent_in=1, ally_compassion=10 },
 			ai_tactic = resolvers.tactic("melee"),
-			max_life = resolvers.rngavg(100,110),
-			life_rating = 9,
-			combat_armor = 0, combat_def = 0,
+			size_category = math.floor(self.level/10),
+			max_life = resolvers.rngavg(70,80),
+			life_rating = 10,
+			combat_armor = 0, combat_def = math.floor(self.level/5),
 			inc_stats = {
 				cun = stat_bonus / 2,
 				mag = stat_bonus,
@@ -181,21 +182,22 @@ newTalent{
 			resists = {[DamageType.FIRE] = 100},
 			summoner_hate_per_kill = self.hate_per_kill/2,
 			resolvers.talents{
-				[Talents.T_LIGHT_ARMOUR_TRAINING]= math.ceil(self.level/20),
+				[Talents.T_LIGHT_ARMOUR_TRAINING]= math.ceil(self.level/10),
 				[Talents.T_STAFF_MASTERY]= math.ceil(self.level/10),
 				[Talents.T_WEAPON_COMBAT]= math.ceil(self.level/10), -- Combat Accuracy
 
 				[Talents.T_FLAME]= math.ceil(self.level/10),
 
-				[Talents.T_BODY_OF_FIRE]= math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)),
-				[Talents.T_BURNING_HEX]= math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)),
-				[Talents.T_SMOKE_BOMB]= math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)),
+				[Talents.T_FLAMESHOCK]= math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)),
+				[Talents.T_FIRE_STORM]= math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING) - 2),
+				[Talents.T_BURNING_HEX]= math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING) - 4),
 			},
 			resolvers.inscription("RUNE:_CONTROLLED_PHASE_DOOR", {cooldown=10, range=5, dur=5, power=15}),
 			resolvers.equip{
-				{type="weapon", subtype="staff", autoreq=true, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
-				{type="armor", subtype="cloth", autoreq=true, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
-				{type="armor", subtype="hands", autoreq=true, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique", "metallic"}, },
+				{type="weapon", subtype="staff", autoreq=true, forbid_power_source={antimagic=true}, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
+				{type="armor", subtype="cloth", autoreq=true, forbid_power_source={antimagic=true}, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
+				{type="jewelry", subtype="ring", autoreq=true, forbid_power_source={antimagic=true}, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
+				{type="jewelry", subtype="ring", autoreq=true, forbid_power_source={antimagic=true}, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
 			},
 			resolvers.sustains_at_birth(),
 		}
@@ -235,7 +237,7 @@ newTalent{
 	type = {"corruption/other", 1},
 	image = "talents/wk_duathedlen.png",
 	points = 5,
-	require = corrs_req1,
+	require = demons_req1,
 	sustain_vim = 40,
 	sustain_hate = 10,
 	mode = "sustained",
@@ -261,18 +263,19 @@ newTalent{
 		local m = NPC.new{ _no_upvalues_check=true,
 			name = _t"summoned demon dúathedlen", summoner = self,
 			power_source = {arcane=true},
-			color=colors.CRIMSON, image = "npc/wk_demon_duathedlen.png",
+			--color=colors.DARK_GREY, image="invis.png", add_mos = {{image="npc/demon_major_duathedlen.png", display_h=2, display_y=-1}},
+			color=colors.DARK_GREY, image="invis.png", add_mos = {{image="npc/demon_major_duathedlen.png", display_h=1, display_y=-1}},
 			shader = "shadow_simulacrum",
 			shader_args = { color = {0.1, 0.1, 0.1}, base = 0.9, time_factor = 10000 },
-			desc = _t[[A summoned demon dúathedlen shrouded in smoke. It wields daggers and appears ready for battle.]],
+			desc = _t[[A summoned shadow demon shrouded in shadows. It wields daggers and appears ready for battle.]],
 			body = { INVEN = 10, MAINHAND = 1, OFFHAND = 1, BODY = 1},
 			movement_speed = self.movement_speed,
 			global_speed_base = self.global_speed,
 			ai = "summoned", ai_real = "tactical",
 			ai_state = { ai_move="move_complex", talent_in=3, ally_compassion=10 },
 			ai_tactic = resolvers.tactic("melee"),
-
-			max_life = resolvers.rngavg(100,110),
+			size_category = math.floor(self.level/10),
+			max_life = resolvers.rngavg(100,120),
 			life_rating = 13,
 			combat_armor = 0, combat_def = 0,
 			inc_stats = {
@@ -285,21 +288,23 @@ newTalent{
 			summoner_hate_per_kill = self.hate_per_kill/2,
 
 			resolvers.talents{
-				[Talents.T_LIGHT_ARMOUR_TRAINING]= math.ceil(self.level/20),
+				[Talents.T_LIGHT_ARMOUR_TRAINING]= math.ceil(self.level/10),
 				[Talents.T_WEAPON_COMBAT]= math.ceil(self.level/10), -- Combat Accuracy
 				[Talents.T_KNIFE_MASTERY] = math.ceil(self.level/10),
+				[Talents.T_DARK_VISION] = math.ceil(self.level/10),
 
 				[Talents.T_SHADOWSTEP]= math.ceil(self.level/10),
-				[Talents.T_REGENERATION]= math.ceil(self.level/10),
+				[Talents.T_COUNTER_ATTACK]= math.ceil(self.level/10),
+
 
 				[Talents.T_SHADOW_COMBAT]= math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)),
-				[Talents.T_SHADOW_GRASP]= math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)),
-				[Talents.T_SHADOW_VEIL]= math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)),
+				[Talents.T_SHADOW_GRASP]= math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING) - 2),
+				[Talents.T_SHADOW_VEIL]= math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING) - 4),
 			},
 			resolvers.equip{
-				{type="weapon", subtype="dagger", autoreq=true, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
-				{type="weapon", subtype="dagger", autoreq=true, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
-				{type="armor", subtype="light", autoreq=true, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
+				{type="weapon", subtype="dagger", autoreq=true, forbid_power_source={antimagic=true}, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
+				{type="weapon", subtype="dagger", autoreq=true, forbid_power_source={antimagic=true}, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
+				{type="armor", subtype="light", autoreq=true, forbid_power_source={antimagic=true}, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
 			},
 			resolvers.sustains_at_birth(),
 		}
@@ -327,19 +332,19 @@ newTalent{
 	end,
 	info = function(self, t)
 		local stat = t.getStatBonus(self)
-		return ([[Summons a dark melee dúathedlen by sacrificing 50%% of your current health. The dúathedlen knows Shadowstep and Regeneration, and has +%d Dexterity, +%d Cunning, and +%d Magic.
+		return ([[Summons a shadow demon by sacrificing 50%% of your current health. The dúathedlen can see through shadows, knows Shadowstep and Regeneration, and has +%d Dexterity, +%d Cunning, and +%d Magic.
 		Activating this talent will put all other demon summons on cooldown.
 		The stat bonuses will improve with your Spellpower.]]):tformat(stat, stat/2, stat/2)
 	end,
 }
 
 newTalent{
-	name = "Summon Demon: Wretch",
-	short_name = "WK_SUMMON_DEMON_WRETCH",
+	name = "Summon Demon: Uruivellas",
+	short_name = "WK_SUMMON_DEMON_URUIVELLAS",
 	type = {"corruption/other", 1},
-	image = "talents/wk_wretch.png",
+	image = "talents/wk_uruivellas.png",
 	points = 5,
-	require = corrs_req1,
+	require = demons_req1,
 	sustain_vim = 40,
 	sustain_hate = 10,
 	mode = "sustained",
@@ -363,25 +368,25 @@ newTalent{
 
 		local NPC = require "mod.class.NPC"
 		local m = NPC.new{ _no_upvalues_check=true,
-			name = _t"summoned demon wretch", summoner = self,
+			name = _t"summoned demon uruivellas", summoner = self,
 			power_source = {arcane=true},
-			color=colors.DARK_GREEN, image = "npc/horror_eldritch_worm_that_walks.png",
+			color=colors.DARK_GREEN, image="invis.png", add_mos = {{image="npc/demon_major_uruivellas.png", display_h=2, display_y=-1}},
 			shader = "shadow_simulacrum",
 			shader_args = { color = {0.3, 0.3, 0.0}, base = 0.3, time_factor = 10000 },
-			desc = _t[[A summoned demon wretch wielding rusty axes in both hands and clad in soiled heavy armor. It appears ready for battle.]],
-			body = { INVEN = 10, MAINHAND = 1, OFFHAND = 1, BODY = 1},
+			desc = _t[[A summoned minotaur-like demon wielding a large rusty axe in both hands and clad in soiled heavy armor. It appears ready for battle.]],
+			body = { INVEN = 10, MAINHAND = 1, HANDS = 1, BODY = 1},
 			movement_speed = self.movement_speed,
 			global_speed_base = self.global_speed,
 			ai = "summoned", ai_real = "tactical",
 			ai_state = { ai_move="move_complex", talent_in=3, ally_compassion=10 },
 			ai_tactic = resolvers.tactic("melee"),
-
-			max_life = resolvers.rngavg(100,110),
-			life_rating = 13,
-			combat_armor = 0, combat_def = 0,
+			size_category = math.floor(self.level/10),
+			max_life = resolvers.rngavg(150,170),
+			life_rating = 16,
+			combat_armor = math.floor(self.level/5), combat_def = 0,
 			inc_stats = {
 				str = stat_bonus,
-				dex = stat_bonus / 2,
+				mag = stat_bonus / 2,
 				con = stat_bonus / 2,
 			},
 
@@ -389,21 +394,22 @@ newTalent{
 			summoner_hate_per_kill = self.hate_per_kill/2,
 
 			resolvers.talents{
-				[Talents.T_ARMOUR_TRAINING]= 1 + math.ceil(self.level/20),
+				[Talents.T_ARMOUR_TRAINING]= 1 + math.ceil(self.level/10),
 				[Talents.T_WEAPON_COMBAT]= math.ceil(self.level/10), -- Combat Accuracy
 				[Talents.T_WEAPONS_MASTERY]= math.ceil(self.level/10),
 
-				[Talents.T_BLINDSIDE]= math.ceil(self.level/10),
-				[Talents.T_CORRUPTED_STRENGTH]= math.ceil(self.level/10),
+				[Talents.T_RUIN]= math.ceil(self.level/10),
+				[Talents.T_ACID_BLOOD]= math.ceil(self.level/10),
 
 				[Talents.T_RUSH]= math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)),
-				[Talents.T_RUIN]= math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)),
-				[Talents.T_BLOOD_SPLASH]= math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING)),
+				[Talents.T_DRAINING_ASSAULT]= math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING) - 2),
+				[Talents.T_BLINDSIDE]= math.floor(self:getTalentLevel(self.T_WK_IMPROVED_SUMMONING) - 4),
+
 			},
 			resolvers.equip{
-				{type="weapon", subtype="waraxe", autoreq=true, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
-				{type="weapon", subtype="waraxe", autoreq=true, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
-				{type="armor", subtype="heavy", autoreq=true, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
+				{type="weapon", subtype="battleaxe", autoreq=true, forbid_power_source={antimagic=true}, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
+				{type="armor", subtype="heavy", autoreq=true, forbid_power_source={antimagic=true}, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
+				{type="armor", subtype="hands", autoreq=true, forbid_power_source={antimagic=true}, ego_chance = math.ceil(-100+(40*self:getTalentLevelRaw(self.T_WK_IMPROVED_SUMMONING))), not_properties = {"unique"} },
 			},
 			resolvers.sustains_at_birth(),
 		}
@@ -431,7 +437,7 @@ newTalent{
 	end,
 	info = function(self, t)
 		local stat = t.getStatBonus(self)
-		return ([[Summons a blighted melee wretch by sacrificing 50%% of your current health. The wretch knows Blindside and Corrupted Strength, and has +%d Strength, +%d Dexterity, and +%d Constitution.
+		return ([[Summons a strong minotaur-like demon by sacrificing 50%% of your current health. The uruivellas has Acid Blood, knows Ruin, and has +%d Strength, +%d Dexterity, and +%d Constitution.
 		Activating this talent will put all other demon summons on cooldown.
 		The stat bonuses will improve with your Spellpower.]]):tformat(stat, stat/2, stat/2)
 	end,
@@ -443,11 +449,11 @@ newTalent{
 	type = {"corruption/demon-summons", 1},
 	image = "talents/wk_summon_demon.png",
 	points = 5,
-	require = corrs_req1,
+	require = demons_req1,
 	mode = "passive",
 	range = 10,
 	unlearn_on_clone = true,
-	getStatBonus = function(self, t) return self:combatTalentSpellDamage(t, 5, 50) end,
+	getStatBonus = function(self, t) return self:combatTalentSpellDamage(t, 5, 100) end,
 	on_learn = function(self, t)
 		if self:getTalentLevel(t) >= 1 and not self:knowTalent(self.T_WK_SUMMON_DEMON_IMP) then
 			self:learnTalent(self.T_WK_SUMMON_DEMON_IMP, true)
@@ -455,8 +461,8 @@ newTalent{
 		if self:getTalentLevel(t) >= 3 and not self:knowTalent(self.T_WK_SUMMON_DEMON_DUATHEDLEN) then
 			self:learnTalent(self.T_WK_SUMMON_DEMON_DUATHEDLEN, true)
 		end
-		if self:getTalentLevel(t) >= 6 and not self:knowTalent(self.T_WK_SUMMON_DEMON_WRETCH) then
-			self:learnTalent(self.T_WK_SUMMON_DEMON_WRETCH, true)
+		if self:getTalentLevel(t) >= 6 and not self:knowTalent(self.T_WK_SUMMON_DEMON_URUIVELLAS) then
+			self:learnTalent(self.T_WK_SUMMON_DEMON_URUIVELLAS, true)
 		end
 	end,
 	on_unlearn = function(self, t)
@@ -466,15 +472,15 @@ newTalent{
 		if self:getTalentLevel(t) < 3 and self:knowTalent(self.T_WK_SUMMON_DEMON_DUATHEDLEN) then
 			self:unlearnTalent(self.T_WK_SUMMON_DEMON_DUATHEDLEN)
 		end
-		if self:getTalentLevel(t) < 6 and self:knowTalent(self.T_WK_SUMMON_DEMON_WRETCH) then
-			self:unlearnTalent(self.T_WK_SUMMON_DEMON_WRETCH)
+		if self:getTalentLevel(t) < 6 and self:knowTalent(self.T_WK_SUMMON_DEMON_URUIVELLAS) then
+			self:unlearnTalent(self.T_WK_SUMMON_DEMON_URUIVELLAS)
 		end
 	end,
 	info = function(self, t)
 		local bonus = t.getStatBonus(self, t)
 		local range = self:getTalentRange(t)
 		return([[Summon a demon by sacrificing 50%% of your current health. Your demon's primary stat will be improved by %d, its two secondary stats by %d.
-		At talent level one, you may summon a fiery imp; at level three a shadow clad dúathedlen; and at level six an awful wretch.
+		At talent level one, you may summon a fiery imp; at level three a shadowy dúathedlen; and at level five a grotesque uruivellas.
 		Summoned demons can only be maintained up to a range of %d, and will rematerialize next to you if this range is exceeded.
 		Only one summoned demon may be active at a time, and the stat bonuses will improve with your Spellpower.]]):tformat(bonus, bonus/2, range)
 	end,
@@ -485,16 +491,17 @@ newTalent{
 	type = {"corruption/demon-summons", 2},
 	image = "talents/wk_unity.png",
 	points = 5,
-	require = corrs_req2,
+	require = demons_req2,
 	mode = "passive",
 	getSpeedPower = function(self, t) return self:combatTalentSpellDamage(t, 5, 15) end,
-	getOffensePower = function(self, t) return self:combatTalentSpellDamage(t, 10, 30) end,
 	getDefensePower = function(self, t) return self:combatTalentSpellDamage(t, 1, 10) end,
+	getOffensePower = function(self, t) return self:combatTalentSpellDamage(t, 10, 30) end,
 	info = function(self, t)
-		local offense = t.getOffensePower(self, t)
-		local defense = t.getDefensePower(self, t)
 		local speed = t.getSpeedPower(self, t)
-		return([[You now gain %d%% spell speed while Summoned Demon: Imp is active, %d%% resist all while Summoned Demon: Dúathedlen is active, and %d Mindpower while Summoned Demon: Wretch is active.
+		local defense = t.getDefensePower(self, t)
+		local offense = t.getOffensePower(self, t)
+		return([[You now gain %d%% spell speed while Summoned Demon: Imp is active, %d%% resist all while Summoned Demon: Dúathedlen is active, and %d Mindpower while Summoned Demon: Uruivellas is active.
+		(Takes effect upon summoning.)
 		These bonuses scale with your Spellpower.]]):tformat(speed, defense, offense)
 	end,
 }
@@ -504,7 +511,7 @@ newTalent{
     image = "talents/wk_flame_fury.png",
 	type = {"corruption/demon-summons", 3},
 	points = 5,
-	require = corrs_req3,
+	require = demons_req3,
 	vim = 10,
 	hate = 5,
 	cooldown = 10,
@@ -540,14 +547,14 @@ newTalent{
 	type = {"corruption/demon-summons", 4},
 	image = "talents/wk_major_summoning.png",
 	points = 5,
-	require = corrs_req4,
+	require = demons_req4,
 	mode = "passive",
 	info = function(self, t)
 		local level = math.floor(self:getTalentLevel(t))
-		return([[Your summoned demons are more powerful and know new talents at talent level %d.
-		Imp: Body of Fire, Burning Hex, and Smoke Bomb.
+		return([[As you improve your skill at summoning your summoned demons learn new talents and use them at an increased level.
+		Imp: Flame Shock, Firestorm, and Burning Hex.
 		Dúathedlen: Shadow Combat, Shadow Grasp, and Shadow Veil.
-		Wretch: Rush, Ruin, and Blood Splash.
-		As your Improved Summoning talent increases, so do the chances of your demons being summoned with improved gear (ego chance).]]):tformat(level)
+		Uruivellas: Rush, Draining Assault, and Blindside.
+		Also as your Improved Summoning talent increases, so do the chances of your demons being summoned with improved gear (ego chance).]]):tformat(level)
 	end,
 }
