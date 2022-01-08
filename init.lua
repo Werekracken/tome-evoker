@@ -2,37 +2,37 @@ long_name = "Evoker"
 short_name = "evoker"
 for_module = "tome"
 version = {1,7,2}
-addon_version = {1,2,4}
+addon_version = {1,2,5}
 weight = 2000
 author = {"Werekracken"}
-tags = {"class", "evoker", "cursed", "corrupted", "demon", "summoner"}
+tags = {"Class", "class", "Evoker", "evoker", "Cursed", "cursed", "Corrupted", "corrupted", "Demon", "demon", "Summoner", "summoner"}
 homepage = "https://te4.org/user/102798/addons"
 description = [[This adds a new Evoker class which is both corrupted and cursed (though it shows up under Defilers). They are a magic class that does blight and fire damage and evokes both shadows and a demon to serve you.
 
-You can hurt, heal, and have no effect on your demons and shadows differently with different spells. Learning how to work with and around your minions will be key.
+It is possible for you and your demons to help or hurt each other with some spells and skills. Learning how to work with and around your minions will be key.
 
 NOTE: This addon requires that you have the Ashes DLC active.
 
 https://github.com/Werekracken/tome-evoker
 
 ---Generic talents
-corruption/black-magic
-corruption/torment
 cursed/cursed-form
-cunning/survival - locked (because everyone gets it)
 cursed/diabolical
+cunning/survival - locked (because everyone gets it)
+cursed/cursed-aura - optional
 
 -Cursed/Diabolical:
 
 Demonic Pulse:
 You sacrifice 10%% of your current health to send out a pulse of demonic energy in radius 10.
 All minions in the pulse gain 25%% global action speed for %d turns and the pulse will attempt to daze all foes for %d turns.
-The chance to daze increases with your Mindpower.
 You also use your knowledge of the demonic arts to passively obtain unlife, making it so that you only die when your life reaches -%d.
+The amount of unlife and the chance to daze increases with your Mindpower.
 
 Demon Portal:
 You instantly swap places with your demon. This heals both of you for %d life and you gain 5 hate.
-The amount healed will increase with your Mindpower.
+Afterwards, your demon and yourself will be out of phase for 3 turns. In this state all new negative status effects duration is reduced by %d%%, your defense is increased by %d and all your resistances by %d%%.
+The amount healed and out of phase bonuses will increase with your Mindpower.
 
 Speed Demon:
 You sacrifice 10%% of your max health in return for speed and power.
@@ -45,25 +45,27 @@ Additionally, your vim will enhance your defences, reducing all damage by %d%% o
 The damage will scale with your Mindpower.
 
 ---Class talents
-corruption/sanguisuge
-corruption/blood
-corruption/shadowflame
-corruption/fearfire - locked
-cursed/shadows
-cursed/fears
-cursed/one-with-shadows - locked
 corruption/demon-summons
+corruption/sanguisuge
+corruption/shadowflame
+corruption/vim
+cursed/darkness
+cursed/fears
+corruption/blood - locked
+corruption/doom-covenant - locked
+corruption/fearfire - locked
 
 -Corruption/Demon Summons:
 
 Summon Demon:
 Summon a demon by sacrificing 50%% of your current health. Your demon's primary stat will be improved by %d, its two secondary stats by %d.
-At talent level one, you may summon an fiery imp; at level three a shadow clad dúathedlen; and at level six an awful wretch.
+At talent level one, you may summon an fiery imp; at level three a shadowy dúathedlen; and at level five a grotesque uruivellas.
 Summoned demons can only be maintained up to a range of %d, and will rematerialize next to you if this range is exceeded.
 Only one summoned demon may be active at a time, and the stat bonuses will improve with your Spellpower.
 
 Demon Unity:
-You now gain %d%% spell speed while Summon Demon: Imp is active, %d%% resist all while Summon Demon: Dúathedlen is active, and %d Mindpower while Summon Demon: Wretch is active.
+You now gain %d%% spell speed while Summoned Demon: Imp is active, %d%% resist all while Summoned Demon: Dúathedlen is active, and %d Mindpower while Summoned Demon: Uruivellas is active.
+(Takes effect upon summoning.)
 These bonuses scale with your Spellpower.
 
 Flame Fury:
@@ -72,9 +74,9 @@ The damage will increase with your Spellpower.
 
 Improved Summoning:
 Your summoned demons are more powerful and know new talents at talent level %d.
-Imp: Body of Fire, Burning Hex, and Smoke Bomb.
+Imp: Flame Shock, Firestorm, and Burning Hex.
 Dúathedlen: Shadow Combat, Shadow Grasp, and Shadow Veil.
-Wretch: Rush, Ruin, and Blood Splash.
+Uruivellas: Rush, Draining Assault, and Blindside.
 As your Improved Summoning talent increases, so do the chances of your demons being summoned with improved gear (ego chance).
 
 
@@ -99,6 +101,18 @@ Gave Imp and Wretch movement talents. Fixed demon equipment so they don't spawn 
 
 v1.2.4
 Reduced pre-req for Blighted Summoning to apply to demons. Fixed imp sometimes missing equipment. Fixed ego chances for demon equipment. Increased imp defense. Gave dúathedlen a regen talent. Added out-of-phase to Demon Portal. Set demon speed equal to yours. Took out some preset talent points to let you spend them as you want. Made Evoker life rating equal to the highest mage (alchemist). Balanced imp phase door. Some hate balancing.
+
+v1.2.5
+This is an overhaul of the class because it didn't feel as good to play and balanced as I wanted it to.
+- Increased max hate a little. It's still a small pool, but doesn't feel as punishing.
+- Increased the level and stat requirements across the board for the Diabolical and Demon Summons trees. Now new demons and levels in Improved Summoming feel special.
+- Took out both shadows trees and Black Magic. Added Darkness, Vim, and Doom Covenant (locked) trees. Locked Fearfire. Took out Torment so that you have to wait to use higher vim cost skill until you have more vim in your pool, or use your life with Bloodcasting.
+- Made demon summons immune to fear and tweaked their life, armor, and defense to give them a bit more survivability.
+- Changed demon summons to start off tiny and grow as you level which is fun with Nekarcos's Visible Size Categories. Without Nekarcos's addon the dúathedlen and uruivellas will be graphically very large even if their size=tiny.
+- Changed the Imp's Improved Summoning skills.
+- Toned down Improved Summoning so that demons only get one skill with the 1st point, improve that skill with the 2nd, get a second skill and improve the first skill with the 3rd point, improve them both with the 4th point, and get a third skill and improve the previous two skills with the 5th point.
+- Changed the wretch to an uruivellas (minotaur-like demon) and gave it a 2Her to help differentiate it from the dúathedlen (shadow demon).
+- Fixed the dúathedlen image.
 ]]
 overload = true
 superload = false
