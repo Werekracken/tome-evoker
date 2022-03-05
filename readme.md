@@ -17,12 +17,14 @@
 
 ---
 
-This addon for [Tales of Maj'Eyal](https://te4.org/) adds a new Evoker class which is both corrupted and cursed (it is available under Defilers). They are a magic class that does blight and fire damage and evokes both shadows and a demon to serve you.
+This addon for [Tales of Maj'Eyal](https://te4.org/) adds a new Evoker class which is both corrupted and cursed (it is available under Defilers). They are a magic class that does blight damage and evokes a demon to serve you.
 You can hurt, heal, and have no effect on your demons and shadows differently with different spells. Learning how to work with and around your minions will be key.
 __NOTE:__ This addon requires that you have the Ashes DLC active.
 
 [Github](https://github.com/Werekracken/tome-evoker)
+
 [Download](https://te4.org/games/addons/tome/evoker)
+
 [Forum](https://forums.te4.org/viewtopic.php?f=50&t=52022)
 
 ## Generic talents

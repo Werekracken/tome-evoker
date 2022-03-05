@@ -7,7 +7,7 @@ weight = 2000
 author = {"Werekracken"}
 tags = {"Class", "class", "Evoker", "evoker", "Cursed", "cursed", "Corrupted", "corrupted", "Demon", "demon", "Summoner", "summoner"}
 homepage = "https://te4.org/user/102798/addons"
-description = [[This adds a new Evoker class which is both corrupted and cursed (though it shows up under Defilers). They are a magic class that does blight and fire damage and evokes both shadows and a demon to serve you.
+description = [[This adds a new Evoker class which is both corrupted and cursed (though it shows up under Defilers). They are a magic class that does blight damage and evokes a demon to serve you.
 
 It is possible for you and your demons to help or hurt each other with some spells and skills. Learning how to work with and around your minions will be key.
 
